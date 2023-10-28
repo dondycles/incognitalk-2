@@ -21,7 +21,7 @@ export default function LoadMore() {
 
   useEffect(() => {
     setQuery({
-      to: searchParams.get("to") ? searchParams.get("to") : "3",
+      to: searchParams.get("to") ? searchParams.get("to") : "20",
       from: searchParams.get("from") ? searchParams.get("from") : "0",
       query: searchParams.get("query") ? searchParams.get("query") : "",
     });
@@ -35,7 +35,7 @@ export default function LoadMore() {
           if (pathname === "/talks")
             route.push(
               `/talks?query=${query.query}&from=${query.from}&to=${String(
-                Number(query.to) + 4
+                Number(query.to) + 20
               )}`
             );
 
@@ -43,7 +43,7 @@ export default function LoadMore() {
             route.push(
               `/talkers/${pathname.replace("/talkers/", "")}?query=${
                 query.query
-              }&from=${query.from}&to=${String(Number(query.to) + 4)}`
+              }&from=${query.from}&to=${String(Number(query.to) + 20)}`
             );
         }}
       >

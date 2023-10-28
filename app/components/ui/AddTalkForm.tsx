@@ -12,13 +12,14 @@ export default function AddTalkForm({ cancel }: { cancel: () => void }) {
     register,
     setError,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
   const add = async (values: FieldValues) => {
     const { error, success } = await addTalk(values);
     if (error) return setError("post", { message: error.message });
 
     reset();
+    cancel();
   };
   return (
     <form onSubmit={handleSubmit(add)} className="flex flex-col gap-2">
@@ -32,15 +33,16 @@ export default function AddTalkForm({ cancel }: { cancel: () => void }) {
       <div className=" flex flex-row gap-2 justify-end">
         <Button
           type="submit"
-          color="success"
+          color={isSubmitting ? "default" : "success"}
+          disabled={isSubmitting}
           className="text-white font-black"
           isIconOnly
           startContent={<BsFillSendFill />}
         />
-
         <Button
           startContent={<TiCancel />}
-          color="danger"
+          color={isSubmitting ? "default" : "danger"}
+          disabled={isSubmitting}
           onClick={() => {
             reset();
             cancel();

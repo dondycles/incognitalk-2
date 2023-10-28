@@ -12,7 +12,7 @@ export default async function Talks({
     .select("*, talkers (*)")
     .range(
       searchParams.from ? searchParams.from : 0,
-      searchParams.to ? searchParams.to : 3
+      searchParams.to ? searchParams.to : 20
     )
     .ilike("talk", `%${searchParams.query ? String(searchParams.query) : ""}%`)
     .order("created_at", { ascending: false });

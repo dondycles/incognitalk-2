@@ -17,7 +17,7 @@ export default async function Talker({
     .eq("userId", params.id)
     .range(
       searchParams.from ? searchParams.from : 0,
-      searchParams.to ? searchParams.to : 3,
+      searchParams.to ? searchParams.to : 20,
       { foreignTable: "talks" }
     )
     .single();
