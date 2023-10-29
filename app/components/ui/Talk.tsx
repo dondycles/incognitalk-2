@@ -6,7 +6,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import TalkComment from "./TalkComment";
 import { UserResponse } from "@supabase/supabase-js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 export default function Talk({
   talk,
   user,
@@ -34,6 +34,7 @@ export default function Talk({
     if (error) return console.log(error);
     reset();
   };
+
   return (
     <div className="bg-primary/10 rounded-xl p-2 flex flex-col gap-2">
       <div className="flex flex-row gap-2 text-xs items-center">
