@@ -10,8 +10,10 @@ import { useState } from "react";
 export default function Talk({
   talk,
   user,
+  comments,
 }: {
   talk: any[any];
+  comments: any[any];
   user: UserResponse;
 }) {
   const pathname = usePathname();
@@ -27,14 +29,11 @@ export default function Talk({
     reset();
   };
   return (
-    <div
-      key={talk.id}
-      className="bg-primary/10 rounded-xl p-2 flex flex-col gap-2"
-    >
+    <div className="bg-primary/10 rounded-xl p-2 flex flex-col gap-2">
       <div className="flex flex-row gap-2 text-xs items-center">
         <Chip
           as={Link}
-          href={`/talkers/${talk.talksComments.talkTalkerId}`}
+          href={`/talkers/${talk.talkerId}`}
           size="sm"
           color="primary"
           className="text-xs"
@@ -46,34 +45,39 @@ export default function Talk({
       </div>
       <p className="bg-primary/5 rounded p-1 ">{talk.talk}</p>
       <div className="mb-0 mt-auto flex flex-col gap-2 ">
-        <div className="flex flex-col">
-          {talk.talksComments.length > 0 && (
-            <>
-              {showComments ? (
-                <>
-                  {talk.talksComments.map((comment: any) => {
-                    return (
-                      <TalkComment
-                        user={user}
-                        key={comment.id}
-                        comment={comment}
-                      />
-                    );
-                  })}
-                </>
-              ) : (
-                <Button
-                  size="sm"
-                  color="primary"
-                  className="text-xs font-black text-primary bg-transparent"
-                  onClick={() => setShowComments(true)}
-                >
-                  SHOW COMMENTS
-                </Button>
-              )}
-            </>
-          )}
-        </div>
+        {talk.talksComments && talk.talksComments.length > 0 && (
+          <div className="flex flex-col">
+            {showComments ? (
+              <>
+                {talk.talksComments.map((comment: any) => {
+                  return (
+                    <TalkComment
+                      user={user}
+                      key={comment.id}
+                      comment={comment}
+                    />
+                  );
+                })}
+              </>
+            ) : (
+              <Button
+                size="sm"
+                color="primary"
+                className="text-xs font-black text-primary bg-transparent"
+                onClick={() => setShowComments(true)}
+              >
+                SHOW COMMENTS
+              </Button>
+            )}
+          </div>
+        )}
+        {comments &&
+          comments.map((comment: any) => {
+            if (comment.talkId === talk.id)
+              return (
+                <TalkComment user={user} key={comment.id} comment={comment} />
+              );
+          })}
 
         <Divider />
         <div className="flex flex-row gap-2">
