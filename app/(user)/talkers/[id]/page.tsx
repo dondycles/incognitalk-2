@@ -22,6 +22,7 @@ export default async function Talker({
       searchParams.to ? searchParams.to : 20,
       { foreignTable: "talks" }
     )
+    .order("created_at", { ascending: false, foreignTable: "talks" })
     .single();
 
   return (

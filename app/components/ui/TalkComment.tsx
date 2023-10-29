@@ -17,12 +17,8 @@ export default function TalkComment({
     if (error) return console.log(error);
   };
 
-  function isCommentInPost(comment: any, talks: any[any]) {
-    return talks.talksComments.some((c: any) => c.id === comment.postId);
-  }
-
   return (
-    <div className="bg-primary/5 rounded p-1 text-xs flex flex-row gap-2 justify-between">
+    <div className="text-xs flex flex-row gap-2 justify-between ">
       <div>
         <Link
           href={`/talkers/${comment.talkers.talkerId}`}
@@ -32,9 +28,7 @@ export default function TalkComment({
         >
           @{comment.talkers.talkerName}
         </Link>
-        <p>
-          <span className="text-primary font-black">//</span> {comment.comment}
-        </p>
+        <p>{comment.comment}</p>
       </div>
       {comment.talkers.userName}
       {/* {isCommentInPost(comment.id, comment.talkers.talks)} */}
@@ -42,12 +36,10 @@ export default function TalkComment({
       {comment.talkers.talks.map((talk) => {
         return <p>{talk.talk}</p>;
       })} */}
-
-      <div className="flex flex-col gap-2">
+      {/* <div className="flex flex-col gap-2">
         <p>{String(user.data.user?.id === comment.talkerId)}</p>
         <p>{String(user.data.user?.id === comment.talkTalkerId)}</p>
-      </div>
-
+      </div> */}
       {user.data.user?.id === comment.talkTalkerId ? (
         <>
           <Button

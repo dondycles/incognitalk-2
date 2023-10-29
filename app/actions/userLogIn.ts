@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 
 export const userLogIn = async (user: FieldValues) => {
-  const email = String(user.username + "@gmail.com");
+  const email = String(user.talkername + "@gmail.com");
   const password = String(user.password);
   const supabase = createServerActionClient({ cookies });
   const session = await supabase.auth.getSession();
