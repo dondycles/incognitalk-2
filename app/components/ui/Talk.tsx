@@ -17,7 +17,8 @@ export default function Talk({
   const { handleSubmit, reset, register } = useForm();
   const comment = async (values: FieldValues) => {
     const { error, success } = await addComment({
-      postId: talk.id,
+      talkId: talk.id,
+      talkTalkerId: talk.talkers.talkerId,
       values: values,
     });
     if (error) return console.log(error);
@@ -31,12 +32,12 @@ export default function Talk({
       <div className="flex flex-row gap-2 text-xs items-center">
         <Chip
           as={Link}
-          href={`/talkers/${talk.talkers.userId}`}
+          href={`/talkers/${talk.talkers.talkerId}`}
           size="sm"
           color="primary"
           className="text-xs"
         >
-          @{talk.talkers.userName}
+          @{talk.talkers.talkerName}
         </Chip>
         <Divider orientation="vertical" />
         <p>{new Date(talk.created_at).toLocaleString()}</p>

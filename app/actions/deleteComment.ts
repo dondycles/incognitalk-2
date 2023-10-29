@@ -5,21 +5,11 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 
-export const addComment = async ({
-  values,
-  talkId,
-  talkTalkerId,
-}: {
-  values: FieldValues;
-  talkId: string;
-  talkTalkerId: UUID;
-}) => {
+export const deleteComment = async (id: UUID) => {
   const supabase = createServerActionClient({ cookies });
-  const { error } = await supabase
-    .from("talksComments")
-    .insert([
-      { comment: values.comment, talkId: talkId, talkTalkerId: talkTalkerId },
-    ]);
+  const { error } = await supabase.from("talksComments").delete().eq("id", id);
+
+  console.log(id);
 
   if (error) return { error: error };
 

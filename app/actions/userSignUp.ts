@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 
 export const userSignUp = async (user: FieldValues) => {
-  const email = String(user.username + "@gmail.com");
+  const email = String(user.talkername + "@gmail.com");
   const password = String(user.password);
   const confirmpassword = String(user.confirmpassword);
   const supabase = createServerActionClient({ cookies });
@@ -26,12 +26,12 @@ export const userSignUp = async (user: FieldValues) => {
     return { error: error.message };
   }
 
-  // await prisma.users.create({
-  //   data: {
-  //     userId: data.user?.id as string,
-  //     userName: user.username,
-  //   },
-  // });
+  await supabase.from("talkers").insert([
+    {
+      talkerId: data.user?.id,
+      talkerName: user.talkername,
+    },
+  ]);
 
   return { success: data };
 };

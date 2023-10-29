@@ -22,16 +22,9 @@ export default function AuthForm() {
       const { error, success } = await userSignUp(values);
 
       if (error) return console.log(error);
-      if (success) {
-        await supabase.from("talkers").insert([
-          {
-            userId: success.user?.id,
-            userName: values.username,
-          },
-        ]);
-        reset();
-        route.replace("/talks");
-      }
+
+      reset();
+      route.replace("/talks");
     }
     if (mode === "login") {
       const { error, success } = await userLogIn(values);
@@ -57,22 +50,20 @@ export default function AuthForm() {
       {mode === "login" && (
         <>
           <Input
-            {...register("username", {
+            {...register("talkername", {
               required: "please input your username",
             })}
-            name="username"
             placeholder="username"
             variant="bordered"
             color="primary"
           />
-          {errors.username && (
-            <ErrorMessage message={String(errors.username.message)} />
+          {errors.talkername && (
+            <ErrorMessage message={String(errors.talkername.message)} />
           )}
           <Input
             {...register("password", {
               required: "please input your password",
             })}
-            name="password"
             placeholder="password"
             variant="bordered"
             color="primary"
@@ -85,22 +76,20 @@ export default function AuthForm() {
       {mode === "signup" && (
         <>
           <Input
-            {...register("username", {
+            {...register("talkername", {
               required: "please input your username",
             })}
-            name="username"
             placeholder="username"
             variant="bordered"
             color="primary"
           />
-          {errors.username && (
-            <ErrorMessage message={String(errors.username.message)} />
+          {errors.talkername && (
+            <ErrorMessage message={String(errors.talkername.message)} />
           )}
           <Input
             {...register("password", {
               required: "please input your password",
             })}
-            name="password"
             placeholder="password"
             variant="bordered"
             color="primary"
@@ -114,7 +103,6 @@ export default function AuthForm() {
               validate: (value) =>
                 value === getValues("password") || "Password did not match!",
             })}
-            name="confirmpassword"
             placeholder="confirm password"
             variant="bordered"
             color="primary"

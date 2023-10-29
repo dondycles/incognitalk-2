@@ -16,7 +16,7 @@ export default async function Talker({
   const { data, error } = await supabase
     .from("talkers")
     .select("*, talks (*, talkers (*), talksComments (*, talkers(*)))")
-    .eq("userId", params.id)
+    .eq("talkerId", params.id)
     .range(
       searchParams.from ? searchParams.from : 0,
       searchParams.to ? searchParams.to : 20,
@@ -27,7 +27,7 @@ export default async function Talker({
   return (
     <div className="px-2  sm:px-4 flex flex-col gap-2 overflow-x-hidden overflow-y-auto">
       <div className="flex flex-row gap-2 text-xs">
-        <p className="text-primary">@{data.userName}</p>
+        <p className="text-primary">@{data.talkerName}</p>
         <Divider orientation="vertical" />
         <p className="text-primary">
           {new Date(data.created_at).toLocaleDateString()}
