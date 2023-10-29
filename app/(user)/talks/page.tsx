@@ -1,12 +1,15 @@
 import LoadMore from "@/app/components/ui/LoadMore";
 import TalksFeed from "@/app/components/ui/TalksFeed";
 import TalksTopBar from "@/app/components/ui/TalksTopBar";
-import { supabase } from "@/supabase/client";
+import { cookies } from "next/headers";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 export default async function Talks({
   searchParams,
 }: {
   searchParams: { from: number; to: number; query: string };
 }) {
+  const supabase = createServerComponentClient({ cookies });
+  const user = await supabase.auth.getUser();
   const { data } = await supabase
     .from("talks")
     .select("*, talkers (*), talksComments (*, talkers(*))")
@@ -19,12 +22,10 @@ export default async function Talks({
     .order("created_at", { ascending: false })
     .order("created_at", { ascending: false, foreignTable: "talksComments" });
 
-  console.log(data);
-
   return (
     <div className="h-full  w-full pt-0  flex flex-col gap-2 overflow-x-hidden overflow-y-auto">
       <TalksTopBar />
-      <TalksFeed talks={data} />
+      <TalksFeed user={user} talks={data} />
       <LoadMore />
     </div>
   );

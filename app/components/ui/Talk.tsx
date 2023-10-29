@@ -1,9 +1,19 @@
 "use client";
 import { addComment } from "@/app/actions/addComent";
 import { Button, Chip, Divider, Input, Link } from "@nextui-org/react";
+import { usePathname } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-export default function Talk({ talk }: { talk: any[any] }) {
+import TalkComment from "./TalkComment";
+import { UserResponse } from "@supabase/supabase-js";
+export default function Talk({
+  talk,
+  user,
+}: {
+  talk: any[any];
+  user: UserResponse;
+}) {
+  const pathname = usePathname();
   const { handleSubmit, reset, register } = useForm();
   const comment = async (values: FieldValues) => {
     const { error, success } = await addComment({
@@ -54,19 +64,7 @@ export default function Talk({ talk }: { talk: any[any] }) {
         {talk.talksComments.length ? (
           talk.talksComments.map((comment: any) => {
             return (
-              <div className="bg-primary/5 rounded p-1 text-xs">
-                <Link
-                  size="sm"
-                  color="primary"
-                  className="cursor-pointer text-xs"
-                >
-                  @{comment.talkers.userName}
-                </Link>
-                <p>
-                  <span className="text-primary font-black">//</span>{" "}
-                  {comment.comment}
-                </p>
-              </div>
+              <TalkComment user={user} key={comment.id} comment={comment} />
             );
           })
         ) : (

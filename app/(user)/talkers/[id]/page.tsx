@@ -1,8 +1,8 @@
 import LoadMore from "@/app/components/ui/LoadMore";
 import Talk from "@/app/components/ui/Talk";
-import { supabase } from "@/supabase/client";
+import { cookies } from "next/headers";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Divider } from "@nextui-org/divider";
-import { UUID } from "crypto";
 
 export default async function Talker({
   searchParams,
@@ -11,9 +11,11 @@ export default async function Talker({
   searchParams: { from: number; to: number; query: string };
   params: { id: string };
 }) {
+  const supabase = createServerComponentClient({ cookies });
+  const user = await supabase.auth.getUser();
   const { data, error } = await supabase
     .from("talkers")
-    .select("*, talks (*, talkers(*))")
+    .select("*, talks (*, talkers (*), talksComments (*, talkers(*)))")
     .eq("userId", params.id)
     .range(
       searchParams.from ? searchParams.from : 0,
@@ -34,7 +36,7 @@ export default async function Talker({
       <Divider />
       <div className="grid gap-2 grid-cols-fluid overflow-x-hidden overflow-y-auto">
         {data.talks.map((talk: any[any]) => {
-          return <Talk key={talk.id} talk={talk} />;
+          return <Talk user={user} key={talk.id} talk={talk} />;
         })}
       </div>
       <LoadMore />
