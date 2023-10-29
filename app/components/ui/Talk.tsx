@@ -17,9 +17,15 @@ export default function Talk({
   user: UserResponse;
 }) {
   const pathname = usePathname();
-  const { handleSubmit, reset, register } = useForm();
+  const {
+    handleSubmit,
+    reset,
+    register,
+    formState: { isSubmitting },
+  } = useForm();
   const [showComments, setShowComments] = useState(false);
   const comment = async (values: FieldValues) => {
+    if (isSubmitting) return;
     const { error, success } = await addComment({
       talkId: talk.id,
       talkTalkerId: talk.talkers.talkerId,
