@@ -18,7 +18,7 @@ export default function Talk({ talk }: { talk: any[any] }) {
       key={talk.id}
       className="bg-primary/10 rounded-xl p-2 flex flex-col gap-2"
     >
-      <header className="flex flex-row gap-2 text-xs items-center">
+      <div className="flex flex-row gap-2 text-xs items-center">
         <Chip
           as={Link}
           href={`/talkers/${talk.talkers.userId}`}
@@ -30,13 +30,12 @@ export default function Talk({ talk }: { talk: any[any] }) {
         </Chip>
         <Divider orientation="vertical" />
         <p>{new Date(talk.created_at).toLocaleString()}</p>
-      </header>
+      </div>
       <Divider />
       <p>
         <span className="text-primary font-black">/</span> {talk.talk}
       </p>
-      <Divider />
-      <footer className="flex flex-row gap-2">
+      <div className="flex flex-row gap-2">
         <Button
           isIconOnly
           startContent={<AiOutlineHeart />}
@@ -50,7 +49,32 @@ export default function Talk({ talk }: { talk: any[any] }) {
             color="primary"
           />
         </form>
-      </footer>
+      </div>
+      <div className="flex flex-col gap-2">
+        {talk.talksComments.length ? (
+          talk.talksComments.map((comment: any) => {
+            return (
+              <div className="bg-primary/5 rounded p-1 text-xs">
+                <Link
+                  size="sm"
+                  color="primary"
+                  className="cursor-pointer text-xs"
+                >
+                  @{comment.talkers.userName}
+                </Link>
+                <p>
+                  <span className="text-primary font-black">//</span>{" "}
+                  {comment.comment}
+                </p>
+              </div>
+            );
+          })
+        ) : (
+          <div className="bg-primary/5 rounded p-1  text-xs text-center">
+            <p>no comments yet...</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

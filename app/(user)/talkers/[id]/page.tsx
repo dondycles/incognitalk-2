@@ -22,7 +22,6 @@ export default async function Talker({
     )
     .single();
 
-  console.log(data);
   return (
     <div className="px-2  sm:px-4 flex flex-col gap-2 overflow-x-hidden overflow-y-auto">
       <div className="flex flex-row gap-2 text-xs">
