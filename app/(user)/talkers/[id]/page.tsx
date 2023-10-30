@@ -3,7 +3,8 @@ import Talk from "@/app/components/ui/Talk";
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Divider } from "@nextui-org/divider";
-import { UUID } from "crypto";
+import { Suspense } from "react";
+import { Spinner } from "@nextui-org/spinner";
 
 export default async function Talker({
   searchParams,
@@ -36,22 +37,25 @@ export default async function Talker({
       </div>
       <Divider />
       <div className="grid gap-2 grid-cols-fluid overflow-x-hidden overflow-y-auto">
-        {data.talks.map(async (talk: any[any]) => {
-          const comments = await supabase
-            .from("talksComments")
-            .select("*, talkers(*)")
-            .eq("talkId", talk.id)
-            .limit(3)
-            .order("created_at", { ascending: false });
-          return (
-            <Talk
-              comments={comments.data}
-              user={user}
-              key={talk.id}
-              talk={talk}
-            />
-          );
-        })}
+        <Suspense fallback={<Spinner size="sm" color="primary" />}>
+          {data.talks.map(async (talk: any[any]) => {
+            const comments = await supabase
+              .from("talksComments")
+              .select("*, talkers(*)")
+              .eq("talkId", talk.id)
+              .limit(3)
+              .order("created_at", { ascending: false });
+            if (!comments) return;
+            return (
+              <Talk
+                comments={comments.data}
+                user={user}
+                key={talk.id}
+                talk={talk}
+              />
+            );
+          })}
+        </Suspense>
       </div>
       <LoadMore />
     </div>

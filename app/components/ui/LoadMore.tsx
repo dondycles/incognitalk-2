@@ -25,7 +25,6 @@ export default function LoadMore() {
       from: searchParams.get("from") ? searchParams.get("from") : "0",
       query: searchParams.get("query") ? searchParams.get("query") : "",
     });
-    console.log(pathname);
   }, [searchParams, pathname]);
 
   return (
