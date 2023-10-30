@@ -23,7 +23,7 @@ export default async function Talker({
     .eq("talkerId", params.id)
     .range(
       searchParams.from ? searchParams.from : 0,
-      searchParams.to ? searchParams.to : 1,
+      searchParams.to ? searchParams.to : 20,
       { foreignTable: "talks" }
     )
     .order("created_at", { ascending: false, foreignTable: "talks" })
