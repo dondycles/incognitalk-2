@@ -6,7 +6,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import TalkComment from "./TalkComment";
 import { UserResponse } from "@supabase/supabase-js";
-import { useEffect, useState } from "react";
+import { FaRegComment } from "react-icons/fa";
 export default function Talk({
   talk,
   user,
@@ -23,7 +23,7 @@ export default function Talk({
     register,
     formState: { isSubmitting },
   } = useForm();
-  const [showComments, setShowComments] = useState(false);
+
   const comment = async (values: FieldValues) => {
     if (isSubmitting) return;
     const { error, success } = await addComment({
@@ -37,47 +37,65 @@ export default function Talk({
 
   return (
     <div className="bg-primary/10 rounded-xl p-2 flex flex-col gap-2">
-      <div className="flex flex-row gap-2 text-xs items-center">
-        <Chip
-          as={Link}
-          href={`/talkers/${talk.talkerId}`}
-          size="sm"
-          color="primary"
-          className="text-xs"
-        >
-          @{talk.talkers.talkerName}
-        </Chip>
-        <Divider orientation="vertical" />
-        <p>{new Date(talk.created_at).toLocaleString()}</p>
-      </div>
+      {!Boolean(pathname.match("/talkers/")) && (
+        <div className="flex flex-row gap-2 text-xs items-center">
+          <Chip
+            as={Link}
+            href={`/talkers/${talk.talkerId}`}
+            size="sm"
+            color="primary"
+            className="text-xs"
+          >
+            @{talk.talkers.talkerName}
+          </Chip>
+        </div>
+      )}
+
       <p className="bg-primary/5 rounded p-1 ">{talk.talk}</p>
+      <p className="text-[10px] opacity-50 text-right">
+        {new Date(talk.created_at).toLocaleString()}
+      </p>
+      <Divider />
+      {/* This is the comments fetched from talks page */}
+      {talk.talksComments && (
+        <div className="text-[10px] opacity-50 text-left flex flex-row-re gap-2 justify-center items-center">
+          {talk.talksComments.length > 0 ? (
+            <>
+              <span>comments</span> <FaRegComment />
+            </>
+          ) : (
+            <>
+              <span>no comments yet</span> <FaRegComment />
+            </>
+          )}
+        </div>
+      )}
+      {/* This is the comments fetched from talkers page */}
+      {comments && (
+        <div className="text-[10px] opacity-50 text-left flex flex-row-re gap-2 justify-center items-center">
+          {comments.length > 0 ? (
+            <>
+              <span>comments</span> <FaRegComment />
+            </>
+          ) : (
+            <>
+              <span>no comments yet</span> <FaRegComment />
+            </>
+          )}
+        </div>
+      )}
       <div className="mb-0 mt-auto flex flex-col gap-2 ">
+        {/* This is the comments fetched from talks page */}
         {talk.talksComments && talk.talksComments.length > 0 && (
           <div className="flex flex-col">
-            {showComments ? (
-              <>
-                {talk.talksComments.map((comment: any) => {
-                  return (
-                    <TalkComment
-                      user={user}
-                      key={comment.id}
-                      comment={comment}
-                    />
-                  );
-                })}
-              </>
-            ) : (
-              <Button
-                size="sm"
-                color="primary"
-                className="text-xs font-black text-primary bg-transparent"
-                onClick={() => setShowComments(true)}
-              >
-                SHOW COMMENTS
-              </Button>
-            )}
+            {talk.talksComments.map((comment: any) => {
+              return (
+                <TalkComment user={user} key={comment.id} comment={comment} />
+              );
+            })}
           </div>
         )}
+        {/* This is the comments fetched from talkers page */}
         {comments &&
           comments.map((comment: any) => {
             if (comment.talkId === talk.id)
@@ -85,7 +103,6 @@ export default function Talk({
                 <TalkComment user={user} key={comment.id} comment={comment} />
               );
           })}
-
         <Divider />
         <div className="flex flex-row gap-2">
           <Button

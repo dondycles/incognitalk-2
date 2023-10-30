@@ -5,6 +5,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Divider } from "@nextui-org/divider";
 import { Suspense } from "react";
 import { Spinner } from "@nextui-org/spinner";
+import { Chip } from "@nextui-org/chip";
 
 export default async function Talker({
   searchParams,
@@ -28,12 +29,12 @@ export default async function Talker({
 
   return (
     <div className="px-2  sm:px-4 flex flex-col gap-2 overflow-x-hidden overflow-y-auto">
-      <div className="flex flex-row gap-2 text-xs">
-        <p className="text-primary">@{data.talkerName}</p>
+      <div className="flex flex-row gap-2 items-center text-xs">
+        <Chip color="primary" size="sm" className="text-white text-xs">
+          @{data.talkerName}
+        </Chip>
         <Divider orientation="vertical" />
-        <p className="text-primary">
-          {new Date(data.created_at).toLocaleDateString()}
-        </p>
+        <p>{new Date(data.created_at).toLocaleDateString()}</p>
       </div>
       <Divider />
       <div className="grid gap-2 grid-cols-fluid overflow-x-hidden overflow-y-auto">
