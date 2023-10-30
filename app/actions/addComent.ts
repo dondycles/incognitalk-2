@@ -1,4 +1,5 @@
 "use server";
+import { Database } from "@/types/supabase";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { UUID } from "crypto";
 import { revalidatePath } from "next/cache";
@@ -14,7 +15,7 @@ export const addComment = async ({
   talkId: string;
   talkTalkerId: UUID;
 }) => {
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createServerActionClient<Database>({ cookies });
   const { error } = await supabase
     .from("talksComments")
     .insert([

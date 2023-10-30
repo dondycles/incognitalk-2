@@ -1,4 +1,5 @@
 "use server";
+import { Database } from "@/types/supabase";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
@@ -9,7 +10,7 @@ export const createTalker = async ({
   talkerId: string;
   talkerName: string;
 }) => {
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createServerActionClient<Database>({ cookies });
   const { error } = await supabase.from("talkers").insert([
     {
       talkerId: talkerId,

@@ -13,11 +13,9 @@ export default async function TalkPage({
   const user = await supabase.auth.getUser();
   const { data, error } = await supabase
     .from("talks")
-    .select("*, talkers(*), talksComments(*, talkers(*)))")
+    .select("*, talksHearters(*), talkers(*), talksComments(*, talkers(*)))")
     .eq("id", params.id)
     .single();
-
-  console.log(data);
 
   return <Talk comments={null} talk={data} user={user} />;
 }

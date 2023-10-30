@@ -19,7 +19,7 @@ export default async function Talker({
   const user = await supabase.auth.getUser();
   const { data, error }: any = await supabase
     .from("talkers")
-    .select("*, talks(*, talkers(*))")
+    .select("*, talks(*, talkers(*, talksHearters(*)), talksHearters(*))")
     .eq("talkerId", params.id)
     .range(
       searchParams.from ? searchParams.from : 0,
@@ -28,6 +28,8 @@ export default async function Talker({
     )
     .order("created_at", { ascending: false, foreignTable: "talks" })
     .single();
+
+  console.log(data);
 
   return (
     <div className="flex flex-col gap-2 overflow-x-hidden overflow-y-auto">
