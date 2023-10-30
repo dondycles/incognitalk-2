@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Gabarito } from "next/font/google";
 import "./globals.css";
 import { NextUI } from "./components/providers/NextUI";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
 
 export const gabarito = Gabarito({
   subsets: ["latin"],
@@ -20,15 +18,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createServerComponentClient({ cookies });
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
   return (
     <html lang="en">
       <body className={gabarito.className}>
-        <NextUI session={session}>{children}</NextUI>
+        <NextUI>{children}</NextUI>
       </body>
     </html>
   );
