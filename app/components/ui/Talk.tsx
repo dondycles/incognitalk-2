@@ -1,6 +1,7 @@
 "use client";
 import { addComment } from "@/app/actions/addComent";
-import { Button, Chip, Divider, Input, Link } from "@nextui-org/react";
+import { Button, Card, Chip, Divider, Input } from "@nextui-org/react";
+import { Link } from "@nextui-org/link";
 import { usePathname } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
@@ -86,23 +87,39 @@ export default function Talk({
       )}
       <div className="mb-0 mt-auto flex flex-col gap-2 ">
         {/* This is the comments fetched from talks page */}
-        {talk.talksComments && talk.talksComments.length > 0 && (
-          <div className="flex flex-col">
-            {talk.talksComments.map((comment: any) => {
-              return (
-                <TalkComment user={user} key={comment.id} comment={comment} />
-              );
-            })}
-          </div>
-        )}
-        {/* This is the comments fetched from talkers page */}
-        {comments &&
-          comments.map((comment: any) => {
-            if (comment.talkId === talk.id)
-              return (
-                <TalkComment user={user} key={comment.id} comment={comment} />
-              );
-          })}
+        <div className="flex flex-col">
+          {talk.talksComments && talk.talksComments.length > 0 && (
+            <>
+              {talk.talksComments.map((comment: any) => {
+                return (
+                  <TalkComment user={user} key={comment.id} comment={comment} />
+                );
+              })}
+              <Link
+                href={`/talk/${talk.id}`}
+                className="text-[10px] mx-auto cursor-pointer"
+              >
+                view more comments
+              </Link>
+            </>
+          )}
+          {/* This is the comments fetched from talkers page */}
+          {comments && comments.length > 0 && (
+            <>
+              {comments.map((comment: any) => {
+                return (
+                  <TalkComment user={user} key={comment.id} comment={comment} />
+                );
+              })}
+              <Link
+                href={`/talk/${talk.id}`}
+                className="text-[10px] mx-auto cursor-pointer"
+              >
+                view more comments
+              </Link>
+            </>
+          )}
+        </div>
         <Divider />
         <div className="flex flex-row gap-2">
           <Button
