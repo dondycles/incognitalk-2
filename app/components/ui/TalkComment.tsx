@@ -16,10 +16,9 @@ export default function TalkComment({
 
     if (error) return console.log(error);
   };
-
   return (
-    <div className="text-xs flex flex-row gap-2 justify-between ">
-      <div>
+    <div className="text-xs flex flex-row gap-2 justify-between bg-primary/5 p-1 rounded">
+      <div className=" flex-1">
         <Link
           href={`/talkers/${comment.talkers.talkerId}`}
           size="sm"
@@ -30,16 +29,6 @@ export default function TalkComment({
         </Link>
         <p>{comment.comment}</p>
       </div>
-      {comment.talkers.userName}
-      {/* {isCommentInPost(comment.id, comment.talkers.talks)} */}
-      {/*       
-      {comment.talkers.talks.map((talk) => {
-        return <p>{talk.talk}</p>;
-      })} */}
-      {/* <div className="flex flex-col gap-2">
-        <p>{String(user.data.user?.id === comment.talkerId)}</p>
-        <p>{String(user.data.user?.id === comment.talkTalkerId)}</p>
-      </div> */}
       {user.data.user?.id === comment.talkTalkerId ? (
         <>
           <Button

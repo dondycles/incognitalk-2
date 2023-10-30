@@ -13,14 +13,11 @@ export default async function TalkPage({
   const user = await supabase.auth.getUser();
   const { data, error } = await supabase
     .from("talks")
-    .select("*")
+    .select("*, talkers(*), talksComments(*, talkers(*)))")
     .eq("id", params.id)
-    .range(
-      searchParams.from ? searchParams.from : 0,
-      searchParams.to ? searchParams.to : 20,
-      { foreignTable: "talks" }
-    )
-    .order("created_at", { ascending: false, foreignTable: "talks" });
+    .single();
+
+  console.log(data);
 
   return <Talk comments={null} talk={data} user={user} />;
 }

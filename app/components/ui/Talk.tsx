@@ -35,9 +35,12 @@ export default function Talk({
     if (error) return console.log(error);
     reset();
   };
-
   return (
-    <div className="bg-primary/10 rounded-xl p-2 flex flex-col gap-2">
+    <div
+      className={`bg-primary/10 rounded-xl p-2 flex flex-col gap-2 ${
+        Boolean(pathname.match("/talk/")) && "max-w-[800px] w-screen mx-auto"
+      }`}
+    >
       {!Boolean(pathname.match("/talkers/")) && (
         <div className="flex flex-row gap-2 text-xs items-center">
           <Chip
@@ -95,12 +98,6 @@ export default function Talk({
                   <TalkComment user={user} key={comment.id} comment={comment} />
                 );
               })}
-              <Link
-                href={`/talk/${talk.id}`}
-                className="text-[10px] mx-auto cursor-pointer"
-              >
-                view more comments
-              </Link>
             </>
           )}
           {/* This is the comments fetched from talkers page */}
@@ -111,14 +108,14 @@ export default function Talk({
                   <TalkComment user={user} key={comment.id} comment={comment} />
                 );
               })}
-              <Link
-                href={`/talk/${talk.id}`}
-                className="text-[10px] mx-auto cursor-pointer"
-              >
-                view more comments
-              </Link>
             </>
           )}
+          <Link
+            href={`/talk/${talk.id}`}
+            className="text-[10px] mx-auto cursor-pointer"
+          >
+            view talk
+          </Link>
         </div>
         <Divider />
         <div className="flex flex-row gap-2">

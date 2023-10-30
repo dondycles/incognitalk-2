@@ -6,6 +6,7 @@ import { Divider } from "@nextui-org/divider";
 import { Suspense } from "react";
 import { Spinner } from "@nextui-org/spinner";
 import { Chip } from "@nextui-org/chip";
+import TalksFeed from "@/app/components/ui/TalksFeed";
 
 export default async function Talker({
   searchParams,
@@ -22,22 +23,25 @@ export default async function Talker({
     .eq("talkerId", params.id)
     .range(
       searchParams.from ? searchParams.from : 0,
-      searchParams.to ? searchParams.to : 20
+      searchParams.to ? searchParams.to : 1,
+      { foreignTable: "talks" }
     )
     .order("created_at", { ascending: false, foreignTable: "talks" })
     .single();
 
   return (
-    <div className="px-2  sm:px-4 flex flex-col gap-2 overflow-x-hidden overflow-y-auto">
-      <div className="flex flex-row gap-2 items-center text-xs">
-        <Chip color="primary" size="sm" className="text-white text-xs">
-          @{data.talkerName}
-        </Chip>
-        <Divider orientation="vertical" />
-        <p>{new Date(data.created_at).toLocaleDateString()}</p>
+    <div className="flex flex-col gap-2 overflow-x-hidden overflow-y-auto">
+      <div className=" px-2 sm:px-4 flex flex-col gap-2">
+        <div className="flex flex-row gap-2 items-center text-xs">
+          <Chip color="primary" size="sm" className="text-white text-xs">
+            @{data.talkerName}
+          </Chip>
+          <Divider orientation="vertical" />
+          <p>{new Date(data.created_at).toLocaleDateString()}</p>
+        </div>
+        <Divider orientation="horizontal" />
       </div>
-      <Divider />
-      <div className="grid gap-2 grid-cols-fluid overflow-x-hidden overflow-y-auto">
+      <TalksFeed>
         <Suspense fallback={<Spinner size="sm" color="primary" />}>
           {data.talks.map(async (talk: any[any]) => {
             const comments = await supabase
@@ -57,7 +61,7 @@ export default async function Talker({
             );
           })}
         </Suspense>
-      </div>
+      </TalksFeed>
       <LoadMore />
     </div>
   );
