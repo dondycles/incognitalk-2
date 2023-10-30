@@ -110,12 +110,14 @@ export default function Talk({
               })}
             </>
           )}
-          <Link
-            href={`/talk/${talk.id}`}
-            className="text-[10px] mx-auto cursor-pointer"
-          >
-            view talk
-          </Link>
+          {!Boolean(pathname.match("/talk/")) && (
+            <Link
+              href={`/talk/${talk.id}`}
+              className="text-[10px] mx-auto cursor-pointer"
+            >
+              view talk
+            </Link>
+          )}
         </div>
         <Divider />
         <div className="flex flex-row gap-2">
