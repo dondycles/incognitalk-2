@@ -1,7 +1,8 @@
 "use client";
 import { deleteComment } from "@/app/actions/deleteComment";
-import { Button, Link } from "@nextui-org/react";
+import { Button, Link, Spinner } from "@nextui-org/react";
 import { UserResponse } from "@supabase/supabase-js";
+import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 
 export default function TalkComment({
@@ -11,10 +12,13 @@ export default function TalkComment({
   comment: any[any];
   user: UserResponse;
 }) {
+  const [isDeleting, setIsDeleting] = useState(false);
   const delete_ = async () => {
+    setIsDeleting(true);
     const { error, success } = await deleteComment(comment.id);
 
     if (error) return console.log(error);
+    setIsDeleting(false);
   };
   return (
     <div className="text-xs flex flex-row gap-2 justify-between bg-primary/5 p-1 rounded">
@@ -34,8 +38,11 @@ export default function TalkComment({
           <Button
             onClick={() => delete_()}
             isIconOnly
-            startContent={<FaTrash />}
+            startContent={
+              isDeleting ? <Spinner color="primary" size="sm" /> : <FaTrash />
+            }
             className="bg-transparent text-danger"
+            isDisabled={isDeleting}
           />
         </>
       ) : (
@@ -43,8 +50,11 @@ export default function TalkComment({
           <Button
             onClick={() => delete_()}
             isIconOnly
-            startContent={<FaTrash />}
+            startContent={
+              isDeleting ? <Spinner color="primary" size="sm" /> : <FaTrash />
+            }
             className="bg-transparent text-danger"
+            isDisabled={isDeleting}
           />
         )
       )}
