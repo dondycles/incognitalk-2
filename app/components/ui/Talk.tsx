@@ -1,6 +1,6 @@
 "use client";
 import { addComment } from "@/app/actions/addComent";
-import { Button, Chip, Divider, Input } from "@nextui-org/react";
+import { Button, Chip, Divider, Input, Spinner } from "@nextui-org/react";
 import { Link } from "@nextui-org/link";
 import { usePathname } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
@@ -43,8 +43,41 @@ export default function Talk({
     (state, newState) => newState as boolean
   );
 
+  // const [optComments, updateOptComments] = useOptimistic(
+  //   talk.talksComments.map((comment) => ({
+  //     comment: comment.comment,
+  //     talker: {
+  //       name: comment.talkers.talkerName,
+  //       id: comment.talkers.talkerId,
+  //     },
+  //   })),
+  //   (state, newState) => {
+  //     return [...state, newState];
+  //   }
+  // );
+
+  // console.log(
+  //   talk.talksComments.map((comment) => ({
+  //     id: comment.id,
+  //     comment: comment.comment,
+  //     talker: {
+  //       name: comment.talkers.talkerName,
+  //       id: comment.talkers.talkerId,
+  //     },
+  //   }))
+  // );
+
   const comment = async (values: FieldValues) => {
     if (isSubmitting) return;
+
+    // updateOptComments({
+    //   comment: values.comment,
+    //   talker: {
+    //     name: user.data.user?.email?.replace("@gmail.com", ""),
+    //     id: user.data.user?.id,
+    //   },
+    // });
+
     const { error, success } = await addComment({
       talkId: talk.id,
       talkTalkerId: talk.talkers.talkerId,
@@ -173,14 +206,16 @@ export default function Talk({
             />
           </div>
 
-          <form onSubmit={handleSubmit(comment)} className="flex-1">
+          <form onSubmit={handleSubmit(comment)} className="flex-1 flex gap-2">
             <Input
               {...register("comment")}
               placeholder="comment"
               variant="bordered"
-              color="primary"
+              color={isSubmitting ? "default" : "primary"}
               size="sm"
+              disabled={isSubmitting}
             />
+            {isSubmitting && <Spinner size="sm" color="primary" />}
           </form>
         </div>
       </div>
