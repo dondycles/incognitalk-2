@@ -1,7 +1,7 @@
 "use client";
 import { addTalk } from "@/app/actions/addTalk";
 import { supabase } from "@/supabase/client";
-import { Button, Input, Textarea } from "@nextui-org/react";
+import { Button, Input, Spinner, Textarea } from "@nextui-org/react";
 import { FieldValues, useForm } from "react-hook-form";
 import { motion as m } from "framer-motion";
 import { TiCancel } from "react-icons/ti";
@@ -15,6 +15,7 @@ export default function AddTalkForm({ cancel }: { cancel: () => void }) {
     formState: { errors, isSubmitting },
   } = useForm();
   const add = async (values: FieldValues) => {
+    if (isSubmitting) return;
     const { error, success } = await addTalk(values);
     if (error) return setError("post", { message: error.message });
 
@@ -37,7 +38,13 @@ export default function AddTalkForm({ cancel }: { cancel: () => void }) {
           disabled={isSubmitting}
           className="text-white font-black"
           isIconOnly
-          startContent={<BsFillSendFill />}
+          startContent={
+            isSubmitting ? (
+              <Spinner color="primary" size="sm" />
+            ) : (
+              <BsFillSendFill />
+            )
+          }
         />
         <Button
           startContent={<TiCancel />}

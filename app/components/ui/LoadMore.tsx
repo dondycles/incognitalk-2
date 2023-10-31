@@ -28,26 +28,25 @@ export default function LoadMore() {
   }, [searchParams, pathname]);
 
   return (
-    <div className="fixed bottom-0 left-0 w-full  p-2 sm:p-4 flex justify-center">
-      <Button
-        onClick={() => {
-          if (pathname === "/talks")
-            route.push(
-              `/talks?query=${query.query}&from=${query.from}&to=${String(
-                Number(query.to) + 20
-              )}`
-            );
+    <Button
+      className="fixed bottom-2 left-[50%] translate-x-[-50%]"
+      onClick={() => {
+        if (pathname === "/talks")
+          route.push(
+            `/talks?query=${query.query}&from=${query.from}&to=${String(
+              Number(query.to) + 20
+            )}`
+          );
 
-          if (pathname === `/talkers/${pathname.replace("/talkers/", "")}`)
-            route.push(
-              `/talkers/${pathname.replace("/talkers/", "")}?query=${
-                query.query
-              }&from=${query.from}&to=${String(Number(query.to) + 20)}`
-            );
-        }}
-      >
-        Load More
-      </Button>
-    </div>
+        if (pathname === `/talkers/${pathname.replace("/talkers/", "")}`)
+          route.push(
+            `/talkers/${pathname.replace("/talkers/", "")}?query=${
+              query.query
+            }&from=${query.from}&to=${String(Number(query.to) + 20)}`
+          );
+      }}
+    >
+      Load More
+    </Button>
   );
 }
