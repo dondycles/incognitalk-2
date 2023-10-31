@@ -23,8 +23,6 @@ export default async function Talks({
     .order("created_at", { ascending: false })
     .order("created_at", { ascending: false, foreignTable: "talksComments" });
 
-  console.log(data);
-
   return (
     <div className="h-full  w-full pt-0  flex flex-col gap-2 overflow-x-hidden overflow-y-auto">
       <TalksTopBar />

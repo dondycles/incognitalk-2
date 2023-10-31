@@ -9,7 +9,7 @@ import TalkComment from "./TalkComment";
 import { UserResponse } from "@supabase/supabase-js";
 import { FaExternalLinkAlt, FaRegComment } from "react-icons/fa";
 import { heartTalk } from "@/app/actions/heartTalk";
-import { Database } from "@/types/supabase";
+import { useOptimistic } from "react";
 export default function Talk({
   talk,
   user,
@@ -26,6 +26,13 @@ export default function Talk({
     register,
     formState: { isSubmitting },
   } = useForm();
+
+  const [optHearts, updateOptHearts] = useOptimistic(
+    talk.talksHearters.length as number,
+    (newState) => {
+      return newState;
+    }
+  );
 
   const comment = async (values: FieldValues) => {
     if (isSubmitting) return;
@@ -46,6 +53,8 @@ export default function Talk({
         )
       )
     ) {
+      updateOptHearts((prev: number) => prev + 1);
+
       const { error, success } = await heartTalk({
         talkId: talk.id,
         mode: "adding",
@@ -59,6 +68,8 @@ export default function Talk({
         )
       )
     ) {
+      updateOptHearts((prev: number) => prev - 1);
+
       const { error, success } = await heartTalk({
         talkId: talk.id,
         mode: "deducting",
@@ -67,6 +78,7 @@ export default function Talk({
     }
     reset();
   };
+
   return (
     <div
       className={`bg-primary/10 rounded-xl p-2 flex flex-col gap-2 ${
@@ -99,12 +111,7 @@ export default function Talk({
         {new Date(talk.created_at).toLocaleString()}
       </p>
       <Divider />
-      {talk.talksHearters &&
-        String(
-          talk.talksHearters.some(
-            (post: any) => post.hearterId === user.data.user?.id
-          )
-        )}
+
       {/* This is the comments fetched from talks page */}
       {talk.talksComments && (
         <div className="text-[10px] opacity-50 text-left flex flex-row-re gap-2 justify-center items-center">
@@ -160,9 +167,7 @@ export default function Talk({
         <div className="flex flex-row gap-2 items-center">
           <div className="flex flex-row items-center">
             <span className="text-[10px]">
-              {talk.talksHearters &&
-                talk.talksHearters.length != 0 &&
-                talk.talksHearters.length}
+              {talk.talksHearters && optHearts != 0 && optHearts}
             </span>
             <Button
               size="sm"
