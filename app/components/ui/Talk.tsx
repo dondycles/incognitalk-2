@@ -170,7 +170,7 @@ export default function Talk({
       )}
       <div className="mb-0 mt-auto flex flex-col gap-2 ">
         {/* This is the comments fetched from talks page */}
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
           {talk.talksComments && talk.talksComments.length > 0 && (
             <>
               {talk.talksComments.map((comment: any) => {
