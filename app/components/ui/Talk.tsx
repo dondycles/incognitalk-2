@@ -9,7 +9,7 @@ import TalkComment from "./TalkComment";
 import { UserResponse } from "@supabase/supabase-js";
 import { FaExternalLinkAlt, FaRegComment } from "react-icons/fa";
 import { heartTalk } from "@/app/actions/heartTalk";
-import { useOptimistic } from "react";
+import { useOptimistic, useState } from "react";
 export default function Talk({
   talk,
   user,
@@ -27,11 +27,20 @@ export default function Talk({
     formState: { isSubmitting },
   } = useForm();
 
+  const [isHearting, setIsHearting] = useState(false);
+
   const [optHearts, updateOptHearts] = useOptimistic(
-    talk.talksHearters.length as number,
-    (newState) => {
-      return newState;
-    }
+    talk.talksHearters.length,
+    (state, newState) => state + Number(newState)
+  );
+
+  const [optHearted, updateOptHearted] = useOptimistic(
+    Boolean(
+      talk.talksHearters.some(
+        (post: any) => post.hearterId === user.data.user?.id
+      )
+    ),
+    (state, newState) => newState as boolean
   );
 
   const comment = async (values: FieldValues) => {
@@ -44,39 +53,25 @@ export default function Talk({
     if (error) return console.log(error);
     reset();
   };
-  const heart = async (values: FieldValues) => {
-    if (isSubmitting) return;
-    if (
-      !Boolean(
-        talk.talksHearters.some(
-          (post: any) => post.hearterId === user.data.user?.id
-        )
-      )
-    ) {
-      updateOptHearts((prev: number) => prev + 1);
-
+  const heart = async () => {
+    if (!optHearted) {
+      updateOptHearts(1);
+      updateOptHearted(true);
       const { error, success } = await heartTalk({
         talkId: talk.id,
         mode: "adding",
       });
       if (error) return console.log(error);
     }
-    if (
-      Boolean(
-        talk.talksHearters.some(
-          (post: any) => post.hearterId === user.data.user?.id
-        )
-      )
-    ) {
-      updateOptHearts((prev: number) => prev - 1);
-
+    if (optHearted) {
+      updateOptHearts(-1);
+      updateOptHearted(false);
       const { error, success } = await heartTalk({
         talkId: talk.id,
         mode: "deducting",
       });
       if (error) return console.log(error);
     }
-    reset();
   };
 
   return (
@@ -172,17 +167,7 @@ export default function Talk({
             <Button
               size="sm"
               isIconOnly
-              startContent={
-                Boolean(
-                  talk.talksHearters.some(
-                    (post: any) => post.hearterId === user.data.user?.id
-                  )
-                ) ? (
-                  <AiFillHeart />
-                ) : (
-                  <AiOutlineHeart />
-                )
-              }
+              startContent={optHearted ? <AiFillHeart /> : <AiOutlineHeart />}
               className="text-lg bg-transparent text-primary"
               onClick={heart}
             />
