@@ -2,14 +2,15 @@
 import { addComment } from "@/app/actions/addComent";
 import { Button, Chip, Divider, Input, Spinner } from "@nextui-org/react";
 import { Link } from "@nextui-org/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import TalkComment from "./TalkComment";
 import { UserResponse } from "@supabase/supabase-js";
 import { FaExternalLinkAlt, FaRegComment } from "react-icons/fa";
 import { heartTalk } from "@/app/actions/heartTalk";
-import { useOptimistic, useState } from "react";
+import { useEffect, useOptimistic, useState } from "react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 export default function Talk({
   talk,
   user,
@@ -197,7 +198,9 @@ export default function Talk({
         <div className="flex flex-row gap-2 items-center">
           <div className="flex flex-row items-center">
             <span className="text-[10px]">
-              {talk.talksHearters && optHearts != 0 && optHearts}
+              {talk.talksHearters &&
+                talk.talksHearters.length != 0 &&
+                talk.talksHearters.length}
             </span>
             <Button
               size="sm"

@@ -24,6 +24,5 @@ export const addComment = async ({
 
   if (error) return { error: error };
 
-  revalidatePath("/talks");
   return { success: "Talk Added!" };
 };

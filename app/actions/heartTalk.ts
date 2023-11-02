@@ -13,7 +13,6 @@ export const heartTalk = async ({
   mode: "adding" | "deducting";
 }) => {
   const supabase = createServerActionClient<Database>({ cookies });
-  console.log(mode);
   if (mode === "adding") {
     const { error } = await supabase
       .from("talksHearters")

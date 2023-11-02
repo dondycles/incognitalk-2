@@ -4,6 +4,7 @@ import TalksTopBar from "@/app/components/ui/TalksTopBar";
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import Talk from "@/app/components/ui/Talk";
+
 export default async function Talks({
   searchParams,
 }: {

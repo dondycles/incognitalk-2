@@ -1,7 +1,6 @@
 "use server";
 import { Database } from "@/types/supabase";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 
@@ -13,6 +12,5 @@ export const addTalk = async (values: FieldValues) => {
 
   if (error) return { error: error };
 
-  revalidatePath("/talks");
   return { success: "Talk Added!" };
 };

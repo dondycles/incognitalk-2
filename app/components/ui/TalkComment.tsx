@@ -20,6 +20,7 @@ export default function TalkComment({
     if (error) return console.log(error);
     setIsDeleting(false);
   };
+
   return (
     <div className="text-xs flex flex-row gap-2 justify-between bg-primary/5 p-1 rounded">
       <div className=" flex-1">
