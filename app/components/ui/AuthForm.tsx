@@ -22,18 +22,13 @@ export default function AuthForm() {
       const { error, success } = await userSignUp(values);
 
       if (error) return console.log(error);
-
-      reset();
       route.replace("/talks");
     }
     if (mode === "login") {
       const { error, success } = await userLogIn(values);
 
       if (error) return console.log(error);
-      if (success) {
-        reset();
-        route.replace("/talks");
-      }
+      route.replace("/talks");
     }
   };
 
