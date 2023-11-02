@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { userSignUp } from "../../actions/userSignUp";
 import { userLogIn } from "../../actions/userLogIn";
-import { supabase } from "@/supabase/client";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 export default function AuthForm() {
   const {
     register,
