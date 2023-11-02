@@ -31,7 +31,7 @@ export default async function Talks({
           return <Talk comments={null} user={user} key={talk.id} talk={talk} />;
         })}
       </TalksFeed>
-      <LoadMore />
+      <LoadMore items={data?.length} />
     </div>
   );
 }

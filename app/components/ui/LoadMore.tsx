@@ -8,7 +8,7 @@ import {
 } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function LoadMore() {
+export default function LoadMore({ items }: { items: number | undefined }) {
   const searchParams = useSearchParams();
   const route = useRouter();
   const pathname = usePathname();
@@ -17,7 +17,7 @@ export default function LoadMore() {
     from: searchParams.get("from"),
     query: searchParams.get("query"),
   });
-  const [range, setRange] = useState(Number(query.to));
+  const [range, setRange] = useState(query.to ? Number(query.to) : 20);
 
   useEffect(() => {
     setQuery({
@@ -27,9 +27,17 @@ export default function LoadMore() {
     });
   }, [searchParams, pathname]);
 
+  useEffect(() => {
+    setRange(Number(query.to));
+  }, [query]);
+
   return (
     <Button
-      className="fixed bottom-2 left-[50%] translate-x-[-50%]"
+      color="primary"
+      variant="shadow"
+      className={`fixed text-xs font-black uppercase bottom-2 left-[50%] translate-x-[-50%] ${
+        range > Number(items) && "hidden"
+      }`}
       onClick={() => {
         if (pathname === "/talks")
           route.push(
@@ -37,7 +45,7 @@ export default function LoadMore() {
               Number(query.to) + 20
             )}`
           );
-
+        setRange((prev) => prev + 20);
         if (pathname === `/talkers/${pathname.replace("/talkers/", "")}`)
           route.push(
             `/talkers/${pathname.replace("/talkers/", "")}?query=${
@@ -46,7 +54,7 @@ export default function LoadMore() {
           );
       }}
     >
-      Load More
+      Load More.
     </Button>
   );
 }

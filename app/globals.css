@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 * {
-  @apply font-gabarito;
+  @apply font-gabarito scrollbar-thin scrollbar-thumb-primary scrollbar-track-background;
 }

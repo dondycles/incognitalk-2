@@ -17,5 +17,9 @@ export default async function TalkPage({
     .eq("id", params.id)
     .single();
 
-  return <Talk comments={null} talk={data} user={user} />;
+  return (
+    <div className="flex px-2 sm:px-12 md:px-32 lg:px-64 xl:px-[300px] 2xl:px-[512px]  pb-20">
+      <Talk comments={null} talk={data} user={user} />
+    </div>
+  );
 }

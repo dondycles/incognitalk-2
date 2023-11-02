@@ -11,14 +11,14 @@ export default function SearchTalkForm({ cancel }: { cancel: () => void }) {
   const searchParams = useSearchParams();
   const [initialized, setInitialized] = useState(false);
   const [query, setQuery] = useState({
-    to: searchParams.get("to") ? searchParams.get("to") : "3",
+    to: searchParams.get("to") ? searchParams.get("to") : "20",
     from: searchParams.get("from") ? searchParams.get("from") : "0",
     query: searchParams.get("query") ? searchParams.get("query") : "",
   });
 
   useEffect(() => {
     setQuery({
-      to: searchParams.get("to") ? searchParams.get("to") : "3",
+      to: "20",
       from: searchParams.get("from") ? searchParams.get("from") : "0",
       query: search,
     });

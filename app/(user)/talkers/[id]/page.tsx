@@ -29,11 +29,9 @@ export default async function Talker({
     .order("created_at", { ascending: false, foreignTable: "talks" })
     .single();
 
-  console.log(data);
-
   return (
     <div className="flex flex-col gap-2 overflow-x-hidden overflow-y-auto">
-      <div className=" px-2 sm:px-4 flex flex-col gap-2">
+      <div className=" px-2 sm:px-12 md:px-32 lg:px-64 xl:px-[300px] 2xl:px-[512px] flex flex-col gap-2">
         <div className="flex flex-row gap-2 items-center text-xs">
           <Chip color="primary" size="sm" className="text-white text-xs">
             @{data.talkerName}
@@ -64,7 +62,7 @@ export default async function Talker({
           })}
         </Suspense>
       </TalksFeed>
-      <LoadMore />
+      <LoadMore items={data.talks.length} />
     </div>
   );
 }
