@@ -27,8 +27,6 @@ export default function Talk({
     formState: { isSubmitting },
   } = useForm();
 
-  const [isHearting, setIsHearting] = useState(false);
-
   const [optHearts, updateOptHearts] = useOptimistic(
     talk.talksHearters.length,
     (state, newState) => state + Number(newState)
@@ -117,7 +115,11 @@ export default function Talk({
         <div className="flex flex-row gap-2 text-xs  justify-between">
           <Chip
             as={Link}
-            href={`/talkers/${talk.talkerId}`}
+            href={
+              talk.talkerId === user.data.user?.id
+                ? "/me"
+                : `/talkers/${talk.talkerId}`
+            }
             size="sm"
             color="primary"
             className="text-xs"
