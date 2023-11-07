@@ -30,7 +30,7 @@ export default function TalksFeed({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const channel = supabase
-      .channel("realtimetalks")
+      .channel("realtimecomments")
       .on(
         "postgres_changes",
         {
@@ -48,9 +48,10 @@ export default function TalksFeed({ children }: { children: React.ReactNode }) {
       supabase.removeChannel(channel);
     };
   }, [supabase, router]);
+
   useEffect(() => {
     const channel = supabase
-      .channel("realtimetalks")
+      .channel("realtimehearts")
       .on(
         "postgres_changes",
         {
@@ -68,7 +69,6 @@ export default function TalksFeed({ children }: { children: React.ReactNode }) {
       supabase.removeChannel(channel);
     };
   }, [supabase, router]);
-
   return (
     // <div className="w-full grid grid-cols-fluid gap-2 overflow-x-hidden overflow-y-auto px-2 sm:px-4 pb-20">
     //   {children}

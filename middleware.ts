@@ -19,6 +19,9 @@ export async function middleware(req: NextRequest) {
   if (!user && req.nextUrl.pathname === "/talks")
     return NextResponse.redirect(new URL("/portal", req.url));
 
+  if (!user && req.nextUrl.pathname === "/me")
+    return NextResponse.redirect(new URL("/portal", req.url));
+
   return res;
 }
 
@@ -49,5 +52,5 @@ export async function middleware(req: NextRequest) {
 // }
 
 export const config = {
-  matcher: ["/", "/portal", "/talks"],
+  matcher: ["/", "/portal", "/talks", "/me"],
 };
